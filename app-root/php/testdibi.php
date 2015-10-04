@@ -1,5 +1,5 @@
 <?php
-
+/*
 dibi::connect(array(
     'driver'   => 'mysql',
     'host'     => getenv('OPENSHIFT_MYSQL_DB_HOST'),
@@ -20,7 +20,7 @@ foreach ($result as $n => $row) {
 
 unset($result);
 
-
+*/
 ?>
 
 <?php 
