@@ -5,10 +5,10 @@ define('user', getenv('OPENSHIFT_MYSQL_DB_USERNAME' || 'admini7llZ7c'));
 define('password', getenv('OPENSHIFT_MYSQL_DB_PASSWORD' || '4QAjFVA_J_uf'));
 define('databaseName', getenv('OPENSHIFT_GEAR_NAME' || 'gameofflags'));
 */
-$hostname = getenv('OPENSHIFT_MYSQL_DB_HOST') || 'localhost';
-$user = getenv('OPENSHIFT_MYSQL_DB_USERNAME') || 'admini7llZ7c';
-$password = getenv('OPENSHIFT_MYSQL_DB_PASSWORD' || '4QAjFVA_J_uf';
-$databaseName = getenv('OPENSHIFT_GEAR_NAME' || 'gameofflags';
+$hostname = getenv('OPENSHIFT_MYSQL_DB_HOST');
+$user = getenv('OPENSHIFT_MYSQL_DB_USERNAME');
+$password = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
+$databaseName = getenv('OPENSHIFT_GEAR_NAME');
 
 // $connect = mysqli_connect(hostname, user, password, databaseName);    
 $connect = mysqli_connect($hostname, $user, $password, $databaseName);  
