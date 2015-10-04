@@ -1,13 +1,13 @@
 <?php
 if($_SERVER["REQUEST_METHOD"]=="POST"){
-	include 'connection.php';
+	include 'connect.php';
 	showStudent();
 }
 function showStudent()
 {
 	global $connect;
 	
-	$query = " Select * FROM STUDENT; ";
+	$query = "select * from student where age < 500";
 	
 	$result = mysqli_query($connect, $query);
 	$number_of_rows = mysqli_num_rows($result);
