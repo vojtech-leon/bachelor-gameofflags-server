@@ -20,5 +20,10 @@ foreach ($result as $n => $row) {
 
 unset($result);
 
+
+?>
+
+<?php 
 echo "Ahoj";
+
 ?>
