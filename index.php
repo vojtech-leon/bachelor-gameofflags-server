@@ -1,3 +1,4 @@
+<!--
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,3 +11,5 @@ Tady asi časem něco dodám.
 
 </body>
 </html>
+-->
+<meta http-equiv="refresh" content="0;url=./app-root">
