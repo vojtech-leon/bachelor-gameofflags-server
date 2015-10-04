@@ -11,7 +11,7 @@ function createStudent() {
 	$lastname = $_POST["lastname"];
 	$age = $_POST["age"];
 	
-	$query = " Insert into student(firstname,lastname,age) values ('$firstname','$lastname','$age');";
+	$query = "Insert into student(firstname,lastname,age) values ("$firstname,$lastname,$age");";
 	
 	mysqli_query($connect, $query) or die (mysqli_error($connect));
 	mysqli_close($connect);

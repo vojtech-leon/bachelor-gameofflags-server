@@ -7,7 +7,7 @@ function showStudent()
 {
 	global $connect;
 	
-	$query = " Select * FROM STUDENT; ";
+	$query = " Select * FROM student; ";
 	
 	$result = mysqli_query($connect, $query);
 	$number_of_rows = mysqli_num_rows($result);
