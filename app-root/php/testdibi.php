@@ -18,33 +18,19 @@ dibi::connect(array(
     'charset'  => 'utf8',
 ));
 
-$vysledek = dibi::query('SELECT * FROM student WHERE age < 500');
+$result = dibi::query('SELECT * FROM student WHERE age < 500');
 
-/*
+
 foreach ($result as $n => $row) {
     print_r($row);
 }
 
 unset($result);
-*/
+
 
 ?>
 
 <?php 
 echo "Ahoj";
 
-?>
-<h1>php nejde?</h1>
-<table>
-<?php
-//$vysledek=mysql_query("select * from student where age < 500");
-  while ($zaznam=MySQL_Fetch_Array($vysledek)):
-    ?>
-    <TR>
-      <TD><?echo $zaznam["firstname"]?></TD>
-      <TD><?echo $zaznam["lastname"]?></TD>    
-	  <TD><?echo $zaznam["age"]?></TD>    
-    </TR>
-    <?    
-  endwhile;
 ?>
