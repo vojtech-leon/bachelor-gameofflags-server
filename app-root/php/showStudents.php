@@ -7,7 +7,7 @@ function showStudent()
 {
 	global $connect;
 	
-	$query = " Select * FROM student WHERE; ";
+	$query = "select * from student where age < 500";
 	
 	$result = mysqli_query($connect, $query);
 	$number_of_rows = mysqli_num_rows($result);
