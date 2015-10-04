@@ -15,6 +15,17 @@ $conn= MySQL_Connect($server, $dbuser, $dbpass); #pøipojení k databázi - vytvoøe
 mysql_query("SET character_set_results=utf8");
 mysql_query("SET character_set_connection=utf8");
 mysql_query("SET character_set_client=utf8");
-
-echo $conn;
+?>
+<table>
+<?php
+$vysledek=mysql_query("select * from student where age < 500");
+  while ($zaznam=MySQL_Fetch_Array($vysledek)):
+    ?>
+    <TR>
+      <TD><?echo $zaznam["firstname"]?></TD>
+      <TD><?echo $zaznam["lastname"]?></TD>    
+	  <TD><?echo $zaznam["age"]?></TD>    
+    </TR>
+    <?    
+  endwhile;
 ?>
