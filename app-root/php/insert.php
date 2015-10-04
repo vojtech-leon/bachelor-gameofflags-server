@@ -1,7 +1,7 @@
 <?php
 
 if($_SERVER["REQUEST_METHOD"]=="POST") {
-	require 'connect.php';
+	include 'connect.php';
 	createStudent();
 }
 function createStudent() {
