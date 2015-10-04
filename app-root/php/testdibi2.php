@@ -2,7 +2,9 @@
 echo "Ahoj";
 
 ?>
-
+<?php 
+include 'dibi.min.php';
+?>
 <?php
 /*
 dibi::connect(array(
