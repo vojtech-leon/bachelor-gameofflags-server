@@ -19,11 +19,9 @@ if (!$connect) {
     echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
     exit;
 }
-
+else{
 echo "Success: A proper connection to MySQL was made! The " . $databaseName . " database is great." . PHP_EOL;
 echo "Host information: " . mysqli_get_host_info($connect) . PHP_EOL;
-
-mysqli_close($connect);      
-
+}
 ?>
 
