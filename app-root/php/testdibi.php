@@ -1,5 +1,5 @@
 <?php
-
+/*
 dibi::connect(array(
     'driver'   => 'mysql',
     'host'     => getenv('OPENSHIFT_MYSQL_DB_HOST'),
@@ -8,8 +8,15 @@ dibi::connect(array(
     'database' => getenv('OPENSHIFT_GEAR_NAME'),
     'charset'  => 'utf8',
 ));
-
-
+*/
+dibi::connect(array(
+    'driver'   => 'mysql',
+    'host'     => 'localhost',
+    'username' => 'admini7llZ7c',
+    'password' => '4QAjFVA_J_uf',
+    'database' => 'gameofflags',
+    'charset'  => 'utf8',
+));
 
 $vysledek = dibi::query('SELECT * FROM student WHERE age < 500');
 
@@ -27,7 +34,7 @@ unset($result);
 echo "Ahoj";
 
 ?>
-
+<h1>php nejde?</h1>
 <table>
 <?php
 //$vysledek=mysql_query("select * from student where age < 500");
