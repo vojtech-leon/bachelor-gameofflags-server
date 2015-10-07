@@ -6,7 +6,7 @@
   <title>Welcome to my project</title>
 <body>
 Hello!
-Tady asi časem něco dodám.
+Toto je index v php/.
 
 </body>
 </html>

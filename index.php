@@ -6,7 +6,7 @@
   <title>Welcome to my project</title>
 <body>
 Hello!
-Tady asi časem něco dodám.
+Todle je index v rootu.
 
 </body>
 </html>
