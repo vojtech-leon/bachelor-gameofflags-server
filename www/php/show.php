@@ -1,15 +1,9 @@
 <?php
-
-namespace App\Presenters;
-
-use Nette,
-    App\Model;
+use Nette;
+use Nette\Application\UI\Form;
 
 
-/**
- * Homepage presenter.
- */
-class HomepagePresenter extends BasePresenter
+class aha
 {
     /** @var Nette\Database\Context */
     private $database;
@@ -22,7 +16,7 @@ class HomepagePresenter extends BasePresenter
     public function renderDefault()
 {	
     $this->template->student = $this->database->table('student');
-	/*
+	
 	$students = $this->database->table('student');
 	
 	$arr = array();
@@ -34,7 +28,7 @@ class HomepagePresenter extends BasePresenter
 
 	
 	$this->payload->students = $arr;
-	$this->sendPayload($arr);*/
+	$this->sendPayload($arr);
 }
 
 }
