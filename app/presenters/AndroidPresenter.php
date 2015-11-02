@@ -37,7 +37,6 @@ class AndroidPresenter extends BasePresenter
 	$this->payload->students = $arr;
 	$this->sendPayload($arr);
 	}
-	public function renderAkce2() {$this->terminate();}
 	public function actionAkce2()
 	{
 		$httpRequest = $this->getHttpRequest();
@@ -49,39 +48,52 @@ class AndroidPresenter extends BasePresenter
 	$this->database->table('student')->insert(array('firstname'=>$firstname,'lastname'=>$lastname,'age'=>$age));
 	}
 
-	public function actionWebView($facebookID)
+	
+	public function actionNewPlayer()
 	{
+		$httpRequest = $this->getHttpRequest();	
+		$facebookID = intval($httpRequest->getPost('facebookID'));
+		$this->database->table('player')->insert(array('facebookID'=>$facebookID));
+	}
+	
+
+	
+	public function actionGetPlayerID()
+	{
+		$httpRequest = $this->getHttpRequest();	
+		$facebookID = $httpRequest->getPost('facebookID');
 	$player = $this->database->table('player')->where('facebookID = ' . $facebookID);
 	$arr = array();
 	foreach ($player as $player)
 	{
-			$arr[] = array("facebookID"=>$player->facebookID,"score"=>$player->score,"level"=>$player->level);
+			$arr[] = array("ID_player"=>$player->ID_player);
 	}
-	$this->payload->data = $arr;
+	$this->payload->id = $arr;
 	$this->sendPayload($arr);
 	}
-	public function actionNewUser($facebookID)
+
+
+	public function actionWebViewPlayer()
 	{
+		$httpRequest = $this->getHttpRequest();	
+		$facebookID = $httpRequest->getPost('facebookID');
 	$player = $this->database->table('player')->where('facebookID = ' . $facebookID);
 	$arr = array();
 	foreach ($player as $player)
 	{
-			$arr[] = array("facebookID"=>$player->facebookID,"score"=>$player->score,"level"=>$player->level);
+			$arr[] = array("score"=>$player->score,"level"=>$player->level);
 	}
 	$this->payload->data = $arr;
 	$this->sendPayload($arr);
 	}
-	public function actionInsertFingerprint($fingerprint)
+	public function actionWebViewScoreFraction()
 	{
-	$player = $this->database->table('fingerprint')->where('facebookID = ' . $facebookID);
-	$arr = array();
-	foreach ($player as $player)
-	{
-			$arr[] = array("facebookID"=>$player->facebookID,"score"=>$player->score,"level"=>$player->level);
-	}
-	$this->payload->data = $arr;
+		$httpRequest = $this->getHttpRequest();	
+		$ID_fraction = intval($httpRequest->getPost('ID_fraction'));
+	$flag = $this->database->table('flag')->where('ID_fraction = ' . $ID_fraction);
+	$arr = count($flag);
+	
+	$this->payload->score = $arr;
 	$this->sendPayload($arr);
 	}
-
-
 }
