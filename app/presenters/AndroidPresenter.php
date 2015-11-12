@@ -52,8 +52,8 @@ class AndroidPresenter extends BasePresenter
 	public function actionNewPlayer()
 	{
 		$httpRequest = $this->getHttpRequest();	
-		$facebookID = intval($httpRequest->getPost('facebookID'));
-		$this->database->table('player')->insert(array('facebookID'=>$facebookID));
+		$userId = $httpRequest->getPost('userId');
+		$this->database->table('player')->insert(array('userId'=>$userId));
 	}
 	
 
@@ -61,8 +61,8 @@ class AndroidPresenter extends BasePresenter
 	public function actionGetPlayerID()
 	{
 		$httpRequest = $this->getHttpRequest();	
-		$facebookID = $httpRequest->getPost('facebookID');
-	$player = $this->database->table('player')->where('facebookID = ' . $facebookID);
+		$userId = $httpRequest->getPost('userId');
+	$player = $this->database->table('player')->where('userId = ' . $userId);
 	$arr = array();
 	foreach ($player as $player)
 	{
@@ -76,14 +76,14 @@ class AndroidPresenter extends BasePresenter
 	public function actionWebViewPlayer()
 	{
 		$httpRequest = $this->getHttpRequest();	
-		$facebookID = $httpRequest->getPost('facebookID');
-	$player = $this->database->table('player')->where('facebookID = ' . $facebookID);
+		$userId = $httpRequest->getPost('userId');
+	$player = $this->database->table('player')->where('userId = ' . $userId);
 	$arr = array();
 	foreach ($player as $player)
 	{
 			$arr[] = array("score"=>$player->score,"level"=>$player->level);
 	}
-	$this->payload->data = $arr;
+	$this->payload->player = $arr;
 	$this->sendPayload($arr);
 	}
 	public function actionWebViewScoreFraction()
@@ -91,9 +91,9 @@ class AndroidPresenter extends BasePresenter
 		$httpRequest = $this->getHttpRequest();	
 		$ID_fraction = intval($httpRequest->getPost('ID_fraction'));
 	$flag = $this->database->table('flag')->where('ID_fraction = ' . $ID_fraction);
-	$arr = count($flag);
+	$arr[] = array("score"=>count($flag));
 	
-	$this->payload->score = $arr;
+	$this->payload->fraction = $arr;
 	$this->sendPayload($arr);
 	}
 }
