@@ -49,11 +49,24 @@ class AndroidPresenter extends BasePresenter
 	}
 
 	
-	public function actionNewPlayer()
+	public function actionLoginPlayer()
 	{
 		$httpRequest = $this->getHttpRequest();	
 		$userId = $httpRequest->getPost('userId');
-		$this->database->table('player')->insert(array('userId'=>$userId));
+
+
+		$player = $this->database->table('player')->where('userId = ' . $userId);
+		if(count($player) == 0) {
+			$this->database->table('player')->insert(array('userId' => $userId));
+			$player = $this->database->table('player')->where('userId = ' . $userId);
+		}
+		$arr = array();
+		foreach ($player as $player)
+		{
+			$arr[] = array("nickname"=>$player->nickname);
+		}
+		$this->payload->player = $arr;
+		$this->sendPayload($arr);
 	}
 	
 
