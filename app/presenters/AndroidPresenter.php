@@ -48,7 +48,8 @@ class AndroidPresenter extends BasePresenter
 	$this->database->table('student')->insert(array('firstname'=>$firstname,'lastname'=>$lastname,'age'=>$age));
 	}
 
-	
+	// ---------------------------- to nad jsou jen pokusy -----------------------
+
 	public function actionLoginPlayer()
 	{
 		$httpRequest = $this->getHttpRequest();	
@@ -56,7 +57,7 @@ class AndroidPresenter extends BasePresenter
 
 
 		$player = $this->database->table('player')->where('userId = ' . $userId);
-		if(count($player) == 0) {
+		if(count($player) == 0) {  // pokud zadny neni
 			$this->database->table('player')->insert(array('userId' => $userId));
 			$player = $this->database->table('player')->where('userId = ' . $userId);
 		}
@@ -109,4 +110,38 @@ class AndroidPresenter extends BasePresenter
 	$this->payload->fraction = $arr;
 	$this->sendPayload($arr);
 	}
+    public function actionChangeFraction()
+    {
+        $httpRequest = $this->getHttpRequest();
+        $userId = $httpRequest->getPost('userId');
+        $ID_fraction = intval($httpRequest->getPost('ID_fraction'));
+
+        // tak nevim co je spatne
+        $this->database->table('player')->where('userId = ' . $userId)->update(array('ID_fraction' => $ID_fraction));
+    }
+    public function actionGetPlayerFraction()
+    {
+        $httpRequest = $this->getHttpRequest();
+        $userId = $httpRequest->getPost('userId');
+        $player = $this->database->table('player')->where('userId = ' . $userId);
+        $arr = array();
+        foreach ($player as $player)
+        {
+            $arr[] = array("ID_fraction"=>$player->ID_fraction,"changeFractionWhen"=>$player->changeFractionWhen);
+        }
+        $this->payload->player = $arr;
+        $this->sendPayload($arr);
+    }
+    public function actionGetFractionName()
+    {
+        $httpRequest = $this->getHttpRequest();
+        $ID_fraction = $httpRequest->getPost('ID_fraction');
+        $fraction = $this->database->table('fraction')->where('ID_fraction = ' . $ID_fraction);
+        $arr = array();
+        foreach ($fraction as $fraction) {
+            $arr[] = array("name" => $fraction->name);
+        }
+        $this->payload->fraction = $arr;
+        $this->sendPayload($arr);
+    }
 }
