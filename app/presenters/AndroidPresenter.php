@@ -40,7 +40,7 @@ class AndroidPresenter extends BasePresenter
 	public function actionAkce2()
 	{
 		$httpRequest = $this->getHttpRequest();
-		
+
 	$firstname = $httpRequest->getPost('firstname');
 	$lastname = $httpRequest->getPost('lastname');
 	 $age = intval($httpRequest->getPost('age'));
@@ -52,7 +52,7 @@ class AndroidPresenter extends BasePresenter
 
 	public function actionLoginPlayer()
 	{
-		$httpRequest = $this->getHttpRequest();	
+		$httpRequest = $this->getHttpRequest();
 		$userId = $httpRequest->getPost('userId');
 
 
@@ -74,7 +74,7 @@ class AndroidPresenter extends BasePresenter
 	
 	public function actionGetPlayerID()
 	{
-		$httpRequest = $this->getHttpRequest();	
+		$httpRequest = $this->getHttpRequest();
 		$userId = $httpRequest->getPost('userId');
 	$player = $this->database->table('player')->where('userId = ' . $userId);
 	$arr = array();
@@ -89,7 +89,7 @@ class AndroidPresenter extends BasePresenter
 
 	public function actionWebViewPlayer()
 	{
-		$httpRequest = $this->getHttpRequest();	
+		$httpRequest = $this->getHttpRequest();
 		$userId = $httpRequest->getPost('userId');
 	$player = $this->database->table('player')->where('userId = ' . $userId);
 	$arr = array();
@@ -102,11 +102,11 @@ class AndroidPresenter extends BasePresenter
 	}
 	public function actionWebViewScoreFraction()
 	{
-		$httpRequest = $this->getHttpRequest();	
+		$httpRequest = $this->getHttpRequest();
 		$ID_fraction = intval($httpRequest->getPost('ID_fraction'));
 	$flag = $this->database->table('flag')->where('ID_fraction = ' . $ID_fraction);
 	$arr[] = array("score"=>count($flag));
-	
+
 	$this->payload->fraction = $arr;
 	$this->sendPayload($arr);
 	}
@@ -114,10 +114,8 @@ class AndroidPresenter extends BasePresenter
     {
         $httpRequest = $this->getHttpRequest();
         $userId = $httpRequest->getPost('userId');
-        $ID_fraction = intval($httpRequest->getPost('ID_fraction'));
-
-        // tak nevim co je spatne
-        $this->database->table('player')->where('userId = ' . $userId)->update(array('ID_fraction' => $ID_fraction));
+        $ID_fraction = $httpRequest->getPost('ID_fraction');
+        $this->database->table('player')->where('userId',$userId)->update(array('ID_fraction' => $ID_fraction));
     }
     public function actionGetPlayerFraction()
     {
