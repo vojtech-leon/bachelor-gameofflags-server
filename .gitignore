@@ -5,3 +5,10 @@ vendor/*
 !.htaccess
 !web.config
 app/config/config.local.neon
+
+log/.htaccess
+log/web.config
+temp/.htaccess
+temp/web.config
+vendor/.htaccess
+vendor/web.config
