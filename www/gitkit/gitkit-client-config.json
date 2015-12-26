@@ -1,0 +1,9 @@
+{
+  "widgetUrl": "http://gameofflags-vojtele1.rhcloud.com/gitkit/gitkit.php",
+  "signInSuccessUrl": "http://gameofflags-vojtele1.rhcloud.com/gitkit",
+  "signOutUrl": "http://gameofflags-vojtele1.rhcloud.com/gitkit",
+  "oobActionUrl": "/",
+  "apiKey": "AIzaSyARf53ZPZ8-YOzpAwxrqmTuWz0cTKozoOQ",
+  "siteName": "this site",
+  "signInOptions": ["password","google","facebook"]
+}
