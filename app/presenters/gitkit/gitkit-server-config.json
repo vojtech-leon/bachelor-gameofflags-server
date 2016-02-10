@@ -1,8 +1,8 @@
 {
-  "clientId": "611347376858-g2qgpt14ff20nl1eon0nolqthhsfq2al.apps.googleusercontent.com",
+  "clientId": "331684455779-48r6bj5pjeads9k5cafmqqu1j98nskrp.apps.googleusercontent.com",
   "projectId": "gameofflags-1170",
   "serviceAccountEmail": "service@gameofflags-1170.iam.gserviceaccount.com",
-  "serviceAccountPrivateKeyFile": "./gameofflags-eae4f024dacc.p12",
+  "serviceAccountPrivateKeyFile": "./gitkit/gameofflags-eae4f024dacc.p12",
   "widgetUrl": "http://gameofflags-vojtele1.rhcloud.com/gitkit/gitkit",
   "cookieName": "gtoken"
 }

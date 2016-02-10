@@ -3,57 +3,32 @@
 namespace App\Presenters;
 
 use Nette;
-
-
+use Gitkit_Client;
 class AndroidPresenter extends BasePresenter
 {
 	/** @var Nette\Database\Context */
 	private $database;
 
-
 	public function __construct(Nette\Database\Context $database)
 	{
 		$this->database = $database;
 	}
-
-
-	public function renderShow()
+    // -------------------------------------------------------------------------------------------------
+	/**
+	 * Posle se token a vrati userId
+	 */
+    function validate($token)
 	{
-	$player = $this->database->table('player');
-		if (!$player) {
-			$this->error('Post not found');
-		}
-
-		$this->template->player = $player;
+		$gitkitClient = Gitkit_Client::createFromFile(dirname(__FILE__) . './gitkit/gitkit-server-config.json');
+		return $gitkitClient->validateToken($token)->getUserId();
 	}
-	public function actionAkce()
-	{
-	$students = $this->database->table('student');
-	$arr = array();
-	foreach ($students as $student)
-	{
-			$arr[] = array("id"=>$student->id,"firstname"=>$student->firstname,"lastname"=>$student->lastname,"age"=>$student->age);
-	}
-	$this->payload->students = $arr;
-	$this->sendPayload($arr);
-	}
-	public function actionAkce2()
-	{
-		$httpRequest = $this->getHttpRequest();
 
-	$firstname = $httpRequest->getPost('firstname');
-	$lastname = $httpRequest->getPost('lastname');
-	 $age = intval($httpRequest->getPost('age'));
+    // -------------------------------------------------------------------------------------------------
 	
-	$this->database->table('student')->insert(array('firstname'=>$firstname,'lastname'=>$lastname,'age'=>$age));
-	}
-
-	// ---------------------------- to nad jsou jen pokusy -----------------------
-
 	public function actionLoginPlayer()
 	{
 		$httpRequest = $this->getHttpRequest();
-		$userId = $httpRequest->getPost('userId');
+        $userId = $this->validate($httpRequest->getPost('token'));
 
 
 		$player = $this->database->table('player')->where('userId = ' . $userId);
@@ -75,7 +50,7 @@ class AndroidPresenter extends BasePresenter
 	public function actionGetPlayerID()
 	{
 		$httpRequest = $this->getHttpRequest();
-		$userId = $httpRequest->getPost('userId');
+        $userId = $this->validate($httpRequest->getPost('token'));
 	$player = $this->database->table('player')->where('userId = ' . $userId);
 	$arr = array();
 	foreach ($player as $player)
@@ -90,7 +65,7 @@ class AndroidPresenter extends BasePresenter
 	public function actionWebViewPlayer()
 	{
 		$httpRequest = $this->getHttpRequest();
-		$userId = $httpRequest->getPost('userId');
+        $userId = $this->validate($httpRequest->getPost('token'));
 	$player = $this->database->table('player')->where('userId = ' . $userId);
 	$arr = array();
 	foreach ($player as $player)
@@ -113,14 +88,14 @@ class AndroidPresenter extends BasePresenter
     public function actionChangeFraction()
     {
         $httpRequest = $this->getHttpRequest();
-        $userId = $httpRequest->getPost('userId');
+        $userId = $this->validate($httpRequest->getPost('token'));
         $ID_fraction = $httpRequest->getPost('ID_fraction');
         $this->database->table('player')->where('userId',$userId)->update(array('ID_fraction' => $ID_fraction));
     }
     public function actionGetPlayerFraction()
     {
         $httpRequest = $this->getHttpRequest();
-        $userId = $httpRequest->getPost('userId');
+        $userId = $this->validate($httpRequest->getPost('token'));
         $player = $this->database->table('player')->where('userId = ' . $userId);
         $arr = array();
         foreach ($player as $player)

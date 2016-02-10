@@ -12,4 +12,3 @@ temp/.htaccess
 temp/web.config
 vendor/.htaccess
 vendor/web.config
-certificate/*

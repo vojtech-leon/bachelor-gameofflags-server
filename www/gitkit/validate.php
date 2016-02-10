@@ -12,8 +12,6 @@
 ?>
 <!-- End modification 1 -->
 
-<script type="text/javascript" src="//www.gstatic.com/authtoolkit/js/gitkit.js"></script>
-<link type=text/css rel=stylesheet href="//www.gstatic.com/authtoolkit/css/gitkit.css" />
     <style type="text/css">
         #vypis, #vypis td, #vypis th {border-style: solid; border-collapse: collapse;}
         #token  {max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
@@ -38,30 +36,40 @@ echo "<form method=post action=validate.php><table>".
 
 if (isset($_POST['validateToken']))
 {
-   
-	try {
+    try {
 		 $token = $_POST["token"];
 		$ano = validate($token);
 		if ($ano) {
-			echo "vyslo to<br>";
+			echo "Token je správný.<br>";
+            echo $gitkitClient->validateToken($token)->getUserId();
 		} else {
-			echo "nevyslo to<br>";
+			echo "Nezadal jsi token.<br>";
 		}
 	} catch (Exception $e) {
 		echo 'Caught exception: ',  $e->getMessage(), "\n";
 	}
 
+
 }
 else
 {
-    echo "<p>not clicked<br>";
+    echo "<p>Neklikl jsi na tlačítko.<br>";
 }
 
 ?>
-
-<br><br>
-    Jméno: <?= $gitkitUser->getDisplayName() ?><br>
-    Token: <?= $gitkitClient->getTokenString() ?><br>
+    <?php
+    try {
+        $token = $gitkitClient->getTokenString();
+        if ($token) {
+            echo "<br><br>";
+            echo "Token: " . $token . "<br>";
+        } else {
+            echo "<br>Nejsi přihlášen.<br>";
+        }
+    }catch (Exception $e) {
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
+    ?>
 <br><br>
    <div style="font-weight: bold"> Seznam lidí:</div>
 <br />
@@ -109,5 +117,7 @@ else
 eyJhbGciOiJSUzI1NiIsImtpZCI6ImJMOTJtZyJ9.eyJpc3MiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGUuY29tLyIsImF1ZCI6IjYxMTM0NzM3Njg1OC1nMnFncHQxNGZmMjBubDFlb24wbm9scXRoaHNmcTJhbC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImlhdCI6MTQ1MTA5NDMyMSwiZXhwIjoxNDUyMzAzOTIxLCJ1c2VyX2lkIjoiMDIwMDYwMzI2ODQyMjQwNjkyMDUiLCJlbWFpbCI6InZ2QHZ2LnZ2IiwidmVyaWZpZWQiOmZhbHNlLCJkaXNwbGF5X25hbWUiOiJ2dnZ2dnYifQ.OKERvBcDxT7-4g5bNrNRUWrIzFNVtSVOgSjhjPacqA0nsabqlgrGi3TN6ci-4oltc_FTy7t1QBZVglNDploULhM93IKr5hdPIgsoZu92IrFjKDECPwBcX27CwfVJMI6DngU0Ytvt9_ybvu730q0ladiieF69qnnYG_1NVLqv_lLqK7GFteuSUICl_EXljLPneFMjfzS2hW9COZMnItHaCbIuVfzb28MQcUMoFz9oxEj65nz_DL6ZnF3wF5pZRG5BCpx73RzENIpud1ISMzGMpIoQZQxkQXHpTgo1eeX7Lv42cAooba4SJqHoMPOVFP3wKU2ghQZevwnTuB-LHTQW2Q
 <br><br>
 eyJhbGciOiJSUzI1NiIsImtpZCI6ImJMOTJtZyJ9.eyJpc3MiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGUuY29tLyIsImF1ZCI6IjYxMTM0NzM3Njg1OC1nMnFncHQxNGZmMjBubDFlb24wbm9scXRoaHNmcTJhbC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImlhdCI6MTQ1MTA5Njc0NSwiZXhwIjoxNDUyMzA2MzQ1LCJ1c2VyX2lkIjoiMDIwMDYwMzI2ODQyMjQwNjkyMDUiLCJlbWFpbCI6InZ2QHZ2LnZ2IiwidmVyaWZpZWQiOmZhbHNlLCJkaXNwbGF5X25hbWUiOiJ2dnZ2dnYifQ.OFHWkEX8eElzCupNj1mFJYnVS7ZssTuHM86Ycfs-OtmXa-678pt7Gpmi6YS3bwunrD73P-O_f3jtVOdzuXgJDnbUQuYRaZ3ixYh3Qu_am4yTuP7ufT7Mr6SM9d3co-4KRBQaO1WMurazgYXrq_kfP28BHT0p50GxGhXu0pveMeAHFlC8XjIyu0SLH-1V1OVqZCUkGjCaUwaCLezhSKspMA_xCzjgHAAgRuVYz0GJ5xLQIQFs5TJANmTTRYXQvpmjtPfoWiAi0tYEMrf_GJEQownCdejJoMDcmxgdamf7RYD_x4_Td89IrmUKiHgTpRnz08OBE-Xh4H-uzIwE_umoQQ
-<br><br>
+<br>aaaaaa - 26.12.<br>
 eyJhbGciOiJSUzI1NiIsImtpZCI6ImJMOTJtZyJ9.eyJpc3MiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGUuY29tLyIsImF1ZCI6IjYxMTM0NzM3Njg1OC1nMnFncHQxNGZmMjBubDFlb24wbm9scXRoaHNmcTJhbC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImlhdCI6MTQ1MTA5Njg4MywiZXhwIjoxNDUyMzA2NDgzLCJ1c2VyX2lkIjoiMTEyMDg1OTcwODc4NDU2MzU2ODAiLCJlbWFpbCI6ImFhQGFhLmFhIiwidmVyaWZpZWQiOmZhbHNlLCJkaXNwbGF5X25hbWUiOiJhYWFhYWEifQ.Hyjas-1IwDcYCG54nDYqJ0Sc7pAkmzhMLeE9V1pelFQtmkhazgNHKN0pyzv3wa7k6KkIJxA1ffDj4g9oPH9A3K1z2mh83ZqTYWaQ4tp7ov1Dm_68c_CgUzerOsuEFn5h7KEHQcfmWgghjemMXC3mUDgIKpPg_b1HIt-XJ7YHC_1rhvTHIfjAaQiEAMWhZy3p_FlQlpETrugdwKnZWjKiYXPiH2Rg7gTbujXSYYP7hDHMT_P4FZE4ecol_aWaVz-VqDQo7rJlr3B8jWYzaUUr6y-43oEhW6LUPW9nuC7_jg7v8m-jdP2yIE6QA_v8kOas4qW7ZLBWuY2uKImXzwF47Q
+<br>aaaaaa - 26.12. - odpoledne<br>
+eyJhbGciOiJSUzI1NiIsImtpZCI6ImJMOTJtZyJ9.eyJpc3MiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGUuY29tLyIsImF1ZCI6IjYxMTM0NzM3Njg1OC1nMnFncHQxNGZmMjBubDFlb24wbm9scXRoaHNmcTJhbC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImlhdCI6MTQ1MTE0OTc5OSwiZXhwIjoxNDUyMzU5Mzk5LCJ1c2VyX2lkIjoiMTEyMDg1OTcwODc4NDU2MzU2ODAiLCJlbWFpbCI6ImFhQGFhLmFhIiwidmVyaWZpZWQiOmZhbHNlLCJkaXNwbGF5X25hbWUiOiJhYWFhYWEifQ.O3oZrnULZCbrdLneE7Fi7OKlrmyXQr4NdhFOKv3ld1Op3sKrohyLj-hWQV530EPPPtA7i8zOEsTYSvK2DC19DJynyPeHr_kEL07VJHz6DST-t97udhdrfvFxs4lbAc_C5vJroPI5m_zhsP5Z4oniZ3-TMyLdO9GRXJqlKTsWVV24ka4gJQXO4CLdHjlPWPso4H2Il9ORxpPQQiEty7vvyebfIKcnyH2lFiZpPR1UKo2F2DPHerGWWSkLNvQakWBiZyg3lOPnG9Ayo1pQUlwvXfDrexQPpToWZwbyN-58zO0J7IwC_I6kqpZ64BYgfw53EftySebYkTuc046JKh1i1Q
