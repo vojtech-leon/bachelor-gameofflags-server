@@ -117,4 +117,30 @@ class AndroidPresenter extends BasePresenter
         $this->payload->fraction = $arr;
         $this->sendPayload($arr);
     }
+	public function actionSendScan()
+	{
+		$httpRequest = $this->getHttpRequest();
+        $userId = $this->validate($httpRequest->getPost('token'));
+		$qr = $httpRequest->getPost('qr');
+		$fingerprint = $httpRequest->getPost('fingerprint');
+		$scanWhen = $httpRequest->getPost('scanWhen');
+        $player = $this->database->table('player')->where('userId = ' . $userId);
+        foreach ($player as $player)
+        {
+            $ID_player = $player->ID_player;
+        }
+        // TODO poznani vlajky podle qr kodu
+       // $ID_flag = $this->database->table('flag')->where('qr = ' . $qr);
+        $ID_flag = $qr;
+
+        $this->database->table('scan')->insert(array('ID_player' => $ID_player, 'ID_flag' => $ID_flag,
+        'fingerprint' => $fingerprint, 'scanWhen' => $scanWhen));
+        $scan = $this->database->table('scan')->where('scanWhen = ? AND ID_player = ?', $scanWhen, $ID_player);
+		$arr = array();
+		foreach ($scan as $scan) {
+			$arr[] = array('scanWhen' => $scan->scanWhen);
+		}
+		$this->payload->scan = $arr;
+		$this->sendPayload($arr);
+	}
 }
