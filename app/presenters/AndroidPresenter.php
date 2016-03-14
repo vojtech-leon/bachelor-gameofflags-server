@@ -143,4 +143,39 @@ class AndroidPresenter extends BasePresenter
 		$this->payload->scan = $arr;
 		$this->sendPayload($arr);
 	}
+	public function actionChangePlayerName()
+    {
+        $httpRequest = $this->getHttpRequest();
+        $userId = $this->validate($httpRequest->getPost('token'));
+        $nickname = $httpRequest->getPost('nickname');
+        $this->database->table('player')->where('userId',$userId)->update(array('nickname' => $nickname));
+		
+		$player = $this->database->table('player')->where('userId = ?', $userId);
+		$arr = array();
+		foreach ($player as $player) {
+			$arr[] = array('nickname' => $player->nickname);
+		}
+		$this->payload->player = $arr;
+		$this->sendPayload($arr);
+    }
+	public function actionChangePlayerScore()
+    {
+        $httpRequest = $this->getHttpRequest();
+        $userId = $this->validate($httpRequest->getPost('token'));
+        $player = $this->database->table('player')->where('userId = ' . $userId);
+        foreach ($player as $player)
+        {
+            $score = $player->score;
+        }	
+		// +1 pricteni bodu za zabrani vlajky
+        $this->database->table('player')->where('userId',$userId)->update(array('score' => $score + 1));
+		
+		$player = $this->database->table('player')->where('userId = ?', $userId);
+		$arr = array();
+		foreach ($player as $player) {
+			$arr[] = array('score' => $player->score);
+		}
+		$this->payload->player = $arr;
+		$this->sendPayload($arr);
+    }
 }
