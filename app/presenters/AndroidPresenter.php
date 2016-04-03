@@ -121,7 +121,7 @@ class AndroidPresenter extends BasePresenter
 	{
 		$httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
-		$qr = $httpRequest->getPost('qr');
+		$flag = $httpRequest->getPost('flag');
 		$fingerprint = $httpRequest->getPost('fingerprint');
 		$scanWhen = $httpRequest->getPost('scanWhen');
         $player = $this->database->table('player')->where('userId = ' . $userId);
@@ -129,9 +129,7 @@ class AndroidPresenter extends BasePresenter
         {
             $ID_player = $player->ID_player;
         }
-        // TODO poznani vlajky podle qr kodu
-       // $ID_flag = $this->database->table('flag')->where('qr = ' . $qr);
-        $ID_flag = $qr;
+        $ID_flag = $flag;
 
         $this->database->table('scan')->insert(array('ID_player' => $ID_player, 'ID_flag' => $ID_flag,
         'fingerprint' => $fingerprint, 'scanWhen' => $scanWhen));
@@ -176,6 +174,26 @@ class AndroidPresenter extends BasePresenter
 			$arr[] = array('score' => $player->score);
 		}
 		$this->payload->player = $arr;
+		$this->sendPayload($arr);
+    }
+	public function actionChangeFlagOwner()
+    {
+        $httpRequest = $this->getHttpRequest();
+        $userId = $this->validate($httpRequest->getPost('token'));
+        $ID_flag = $httpRequest->getPost('flag');
+        $player = $this->database->table('player')->where('userId = ' . $userId);
+        foreach ($player as $player)
+        {
+            $ID_fraction = $player->ID_fraction;
+			$ID_player = $player->ID_player;
+        }	
+        $this->database->table('flag')->where('ID_flag',$ID_flag)->update(array('ID_fraction' => $ID_fraction, 'ID_player' => $ID_player));
+		$flag = $this->database->table('flag')->where('ID_flag = ?', $ID_flag);
+		$arr = array();
+		foreach ($flag as $flag) {
+			$arr[] = array('flagWhen' => $flag->flagWhen);
+		}
+		$this->payload->flag = $arr;
 		$this->sendPayload($arr);
     }
 }
