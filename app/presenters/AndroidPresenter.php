@@ -191,7 +191,38 @@ class AndroidPresenter extends BasePresenter
 		$flag = $this->database->table('flag')->where('ID_flag = ?', $ID_flag);
 		$arr = array();
 		foreach ($flag as $flag) {
-			$arr[] = array('flagWhen' => $flag->flagWhen);
+			$arr[] = array('ID_flag' => $flag->ID_flag);
+		}
+		$this->payload->flag = $arr;
+		$this->sendPayload($arr);
+    }
+	
+	// stejny hrac, i kdyz zmeni frakci, nemuze zabrat znovu stejnou vlajku
+	public function actionGetFlagWhen()
+    {
+        $httpRequest = $this->getHttpRequest();
+        $userId = $this->validate($httpRequest->getPost('token'));
+        $ID_flag = $httpRequest->getPost('flag');
+        $player = $this->database->table('player')->where('userId = ?', $userId);
+        foreach ($player as $player)
+        {
+			$ID_player = $player->ID_player;
+			$ID_fraction = $player->ID_fraction;
+        }	
+		$flag = $this->database->table('flag')->where('ID_flag = ?', $ID_flag);
+		$arr = array();
+		foreach ($flag as $flag) {
+			if ($flag->ID_player == $ID_player) {
+				$flagMe = true;
+			} else {
+				$flagMe = false;
+			}
+			if ($flag->ID_fraction == $ID_fraction) {
+				$fractionMe = true;
+			} else {
+				$fractionMe = false;
+			}
+			$arr[] = array('flagWhen' => $flag->flagWhen, 'flagMe' => $flagMe, 'fractionMe' => $fractionMe);
 		}
 		$this->payload->flag = $arr;
 		$this->sendPayload($arr);
