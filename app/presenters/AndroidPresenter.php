@@ -180,7 +180,7 @@ class AndroidPresenter extends BasePresenter
     {
         $httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
-        $ID_flag = $httpRequest->getPost('flag');
+        $ID_flag = $httpRequest->getPost('ID_flag');
         $player = $this->database->table('player')->where('userId = ' . $userId);
         foreach ($player as $player)
         {
@@ -198,11 +198,11 @@ class AndroidPresenter extends BasePresenter
     }
 	
 	// stejny hrac, i kdyz zmeni frakci, nemuze zabrat znovu stejnou vlajku
-	public function actionGetFlagWhen()
+	public function actionGetFlagInfoUser()
     {
         $httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
-        $ID_flag = $httpRequest->getPost('flag');
+        $ID_flag = $httpRequest->getPost('ID_flag');
         $player = $this->database->table('player')->where('userId = ?', $userId);
         foreach ($player as $player)
         {
@@ -223,6 +223,18 @@ class AndroidPresenter extends BasePresenter
 				$fractionMe = false;
 			}
 			$arr[] = array('flagWhen' => $flag->flagWhen, 'flagMe' => $flagMe, 'fractionMe' => $fractionMe);
+		}
+		$this->payload->flag = $arr;
+		$this->sendPayload($arr);
+    }
+	public function actionGetFlagInfo()
+    {
+        $httpRequest = $this->getHttpRequest();
+        $ID_flag = $httpRequest->getPost('ID_flag');
+		$flag = $this->database->table('flag')->where('ID_flag = ?', $ID_flag);
+		$arr = array();
+		foreach ($flag as $flag) {
+			$arr[] = array('flagWhen' => $flag->flagWhen, 'ID_fraction' => $flag->ID_fraction);
 		}
 		$this->payload->flag = $arr;
 		$this->sendPayload($arr);
