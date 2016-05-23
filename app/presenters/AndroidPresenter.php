@@ -24,17 +24,17 @@ class AndroidPresenter extends BasePresenter
 	}
 
     // -------------------------------------------------------------------------------------------------
-	
+		
 	public function actionLoginPlayer()
 	{
 		$httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
 
 
-		$player = $this->database->table('player')->where('userId = ' . $userId);
+		$player = $this->database->table('player')->where('userId = ?', $userId);
 		if(count($player) == 0) {  // pokud zadny neni
 			$this->database->table('player')->insert(array('userId' => $userId));
-			$player = $this->database->table('player')->where('userId = ' . $userId);
+			$player = $this->database->table('player')->where('userId = ?', $userId);
 		}
 		$arr = array();
 		foreach ($player as $player)
@@ -51,7 +51,7 @@ class AndroidPresenter extends BasePresenter
 	{
 		$httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
-	$player = $this->database->table('player')->where('userId = ' . $userId);
+	$player = $this->database->table('player')->where('userId = ?', $userId);
 	$arr = array();
 	foreach ($player as $player)
 	{
@@ -66,7 +66,7 @@ class AndroidPresenter extends BasePresenter
 	{
 		$httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
-	$player = $this->database->table('player')->where('userId = ' . $userId);
+	$player = $this->database->table('player')->where('userId = ?', $userId);
 	$arr = array();
 	foreach ($player as $player)
 	{
@@ -79,7 +79,7 @@ class AndroidPresenter extends BasePresenter
 	{
 		$httpRequest = $this->getHttpRequest();
 		$ID_fraction = intval($httpRequest->getPost('ID_fraction'));
-	$flag = $this->database->table('flag')->where('ID_fraction = ' . $ID_fraction);
+	$flag = $this->database->table('flag')->where('ID_fraction = ?', $ID_fraction);
 	$arr[] = array("score"=>count($flag));
 
 	$this->payload->fraction = $arr;
@@ -90,13 +90,13 @@ class AndroidPresenter extends BasePresenter
         $httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
         $ID_fraction = $httpRequest->getPost('ID_fraction');
-        $this->database->table('player')->where('userId',$userId)->update(array('ID_fraction' => $ID_fraction));
+        $this->database->table('player')->where('userId',$userId)->update(array('ID_fraction' => $ID_fraction, 'changeFractionWhen' => new \DateTime()));
     }
     public function actionGetPlayerFraction()
     {
         $httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
-        $player = $this->database->table('player')->where('userId = ' . $userId);
+        $player = $this->database->table('player')->where('userId = ?', $userId);
         $arr = array();
         foreach ($player as $player)
         {
@@ -109,7 +109,7 @@ class AndroidPresenter extends BasePresenter
     {
         $httpRequest = $this->getHttpRequest();
         $ID_fraction = $httpRequest->getPost('ID_fraction');
-        $fraction = $this->database->table('fraction')->where('ID_fraction = ' . $ID_fraction);
+        $fraction = $this->database->table('fraction')->where('ID_fraction = ?', $ID_fraction);
         $arr = array();
         foreach ($fraction as $fraction) {
             $arr[] = array("name" => $fraction->name);
@@ -124,7 +124,7 @@ class AndroidPresenter extends BasePresenter
 		$flag = $httpRequest->getPost('flag');
 		$fingerprint = $httpRequest->getPost('fingerprint');
 		$scanWhen = $httpRequest->getPost('scanWhen');
-        $player = $this->database->table('player')->where('userId = ' . $userId);
+        $player = $this->database->table('player')->where('userId = ?', $userId);
         foreach ($player as $player)
         {
             $ID_player = $player->ID_player;
@@ -160,7 +160,7 @@ class AndroidPresenter extends BasePresenter
     {
         $httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
-        $player = $this->database->table('player')->where('userId = ' . $userId);
+        $player = $this->database->table('player')->where('userId = ?', $userId);
         foreach ($player as $player)
         {
             $score = $player->score;
@@ -181,7 +181,7 @@ class AndroidPresenter extends BasePresenter
         $httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
         $ID_flag = $httpRequest->getPost('ID_flag');
-        $player = $this->database->table('player')->where('userId = ' . $userId);
+        $player = $this->database->table('player')->where('userId = ?', $userId);
         foreach ($player as $player)
         {
             $ID_fraction = $player->ID_fraction;
@@ -196,7 +196,7 @@ class AndroidPresenter extends BasePresenter
 		$this->payload->flag = $arr;
 		$this->sendPayload($arr);
     }
-	
+
 	// stejny hrac, i kdyz zmeni frakci, nemuze zabrat znovu stejnou vlajku
 	public function actionGetFlagInfoUser()
     {
@@ -222,7 +222,7 @@ class AndroidPresenter extends BasePresenter
 			} else {
 				$fractionMe = false;
 			}
-			$arr[] = array('flagWhen' => $flag->flagWhen, 'flagMe' => $flagMe, 'fractionMe' => $fractionMe);
+			$arr[] = array('flagWhen' => $flag->flagWhen, 'flagMe' => $flagMe, 'fractionMe' => $fractionMe, 'ID_fraction' => $ID_fraction);
 		}
 		$this->payload->flag = $arr;
 		$this->sendPayload($arr);
