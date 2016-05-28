@@ -91,7 +91,11 @@ class AndroidPresenter extends BasePresenter
         $userId = $this->validate($httpRequest->getPost('token'));
         $ID_fraction = $httpRequest->getPost('ID_fraction');
         $this->database->table('player')->where('userId',$userId)->update(array('ID_fraction' => $ID_fraction, 'changeFractionWhen' => new \DateTime()));
-    }
+		
+		$arr[] = array("zmeneno"=>"ano");
+		$this->payload->fraction = $arr;
+		$this->sendPayload($arr);
+	}
     public function actionGetPlayerFraction()
     {
         $httpRequest = $this->getHttpRequest();
@@ -100,8 +104,14 @@ class AndroidPresenter extends BasePresenter
         $arr = array();
         foreach ($player as $player)
         {
-            $arr[] = array("ID_fraction"=>$player->ID_fraction,"changeFractionWhen"=>$player->changeFractionWhen);
+			$ID_fraction = $player->ID_fraction;
+            $changeFractionWhen = $player->changeFractionWhen;
         }
+		$fraction = $this->database->table('fraction')->where('ID_fraction = ?', $ID_fraction);
+        foreach ($fraction as $fraction) {
+            $arr[] = array("ID_fraction"=> $ID_fraction,"changeFractionWhen"=> $changeFractionWhen, "fractionName" => $fraction->name);
+        }
+		
         $this->payload->player = $arr;
         $this->sendPayload($arr);
     }
@@ -187,7 +197,7 @@ class AndroidPresenter extends BasePresenter
             $ID_fraction = $player->ID_fraction;
 			$ID_player = $player->ID_player;
         }	
-        $this->database->table('flag')->where('ID_flag',$ID_flag)->update(array('ID_fraction' => $ID_fraction, 'ID_player' => $ID_player));
+        $this->database->table('flag')->where('ID_flag',$ID_flag)->update(array('ID_fraction' => $ID_fraction, 'ID_player' => $ID_player, 'flagWhen' => new \DateTime()));
 		$flag = $this->database->table('flag')->where('ID_flag = ?', $ID_flag);
 		$arr = array();
 		foreach ($flag as $flag) {
