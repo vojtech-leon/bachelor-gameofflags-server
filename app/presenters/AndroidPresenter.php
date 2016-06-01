@@ -115,18 +115,6 @@ class AndroidPresenter extends BasePresenter
         $this->payload->player = $arr;
         $this->sendPayload($arr);
     }
-    public function actionGetFractionName()
-    {
-        $httpRequest = $this->getHttpRequest();
-        $ID_fraction = $httpRequest->getPost('ID_fraction');
-        $fraction = $this->database->table('fraction')->where('ID_fraction = ?', $ID_fraction);
-        $arr = array();
-        foreach ($fraction as $fraction) {
-            $arr[] = array("name" => $fraction->name);
-        }
-        $this->payload->fraction = $arr;
-        $this->sendPayload($arr);
-    }
 	public function actionSendScan()
 	{
 		$httpRequest = $this->getHttpRequest();
@@ -244,8 +232,32 @@ class AndroidPresenter extends BasePresenter
 		$flag = $this->database->table('flag')->where('ID_flag = ?', $ID_flag);
 		$arr = array();
 		foreach ($flag as $flag) {
-			$arr[] = array('flagWhen' => $flag->flagWhen, 'ID_fraction' => $flag->ID_fraction);
+			$arr[] = array('flagWhen' => $flag->flagWhen, 'ID_fraction' => $flag->ID_fraction, 'floor' => $flag->floor, 'x' => $flag->x, 'y' => $flag->y);
 		}
+		$this->payload->flag = $arr;
+		$this->sendPayload($arr);
+    }
+	public function actionGetFlagInfoFull()
+    {
+        $httpRequest = $this->getHttpRequest();
+        $ID_flag = $httpRequest->getPost('ID_flag');
+		$flag = $this->database->table('flag')->where('ID_flag = ?', $ID_flag);
+		$arr = array();
+		foreach ($flag as $flag) {
+			$flagWhen = $flag->flagWhen;
+			$ID_fraction = $flag->ID_fraction;
+			$flagName = $flag->name;
+			$ID_player = $flag->ID_player;
+		}
+		$playerNameDB = $this->database->table('player')->select('nickname')->where('ID_player = ?', $ID_player);
+		foreach ($playerNameDB as $playerNameDB) {
+			$playerName = $playerNameDB->nickname;
+		}
+		$fractionNameDB = $this->database->table('fraction')->select('name')->where('ID_fraction = ?', $ID_fraction);
+		foreach ($fractionNameDB as $fractionNameDB) {
+			$fractionName = $fractionNameDB->name;
+		}
+		$arr[] = array('flagWhen' => $flagWhen, 'flagName' => $flagName, 'playerName' => $playerName, 'fractionName' => $fractionName);
 		$this->payload->flag = $arr;
 		$this->sendPayload($arr);
     }
