@@ -228,11 +228,11 @@ class AndroidPresenter extends BasePresenter
 	public function actionGetFlagInfo()
     {
         $httpRequest = $this->getHttpRequest();
-        $ID_flag = $httpRequest->getPost('ID_flag');
-		$flag = $this->database->table('flag')->where('ID_flag = ?', $ID_flag);
+        $floor = $httpRequest->getPost('floor');
+		$flag = $this->database->table('flag')->where('floor = ?', $floor);
 		$arr = array();
 		foreach ($flag as $flag) {
-			$arr[] = array('flagWhen' => $flag->flagWhen, 'ID_fraction' => $flag->ID_fraction, 'floor' => $flag->floor, 'x' => $flag->x, 'y' => $flag->y);
+			$arr[] = array('ID_flag' => $flag->ID_flag, 'flagWhen' => $flag->flagWhen, 'ID_fraction' => $flag->ID_fraction, 'x' => $flag->x, 'y' => $flag->y);
 		}
 		$this->payload->flag = $arr;
 		$this->sendPayload($arr);
