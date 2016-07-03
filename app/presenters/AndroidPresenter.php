@@ -220,7 +220,8 @@ class AndroidPresenter extends BasePresenter
 			} else {
 				$fractionMe = false;
 			}
-			$arr[] = array('flagWhen' => $flag->flagWhen, 'flagMe' => $flagMe, 'fractionMe' => $fractionMe, 'ID_fraction' => $ID_fraction);
+			$arr[] = array('flagWhen' => $flag->flagWhen, 'flagMe' => $flagMe, 'fractionMe' => $fractionMe,
+			'ID_fraction' => $ID_fraction, 'floor' => $flag->floor, 'x' => $flag->x, 'y' => $flag->y);
 		}
 		$this->payload->flag = $arr;
 		$this->sendPayload($arr);
