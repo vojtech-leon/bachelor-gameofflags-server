@@ -262,4 +262,14 @@ class AndroidPresenter extends BasePresenter
 		$this->payload->flag = $arr;
 		$this->sendPayload($arr);
     }
+	public function actionGetQrCodes()
+    {
+		$flag = $this->database->table('flag');
+		$arr = array();
+		foreach ($flag as $flag) {
+			$arr[] = array('qrCode' => $flag->qrCode);	
+		}
+		$this->payload->flag = $arr;
+		$this->sendPayload($arr);
+    }
 }
