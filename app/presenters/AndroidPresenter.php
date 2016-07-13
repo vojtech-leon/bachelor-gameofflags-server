@@ -157,15 +157,9 @@ class AndroidPresenter extends BasePresenter
 	public function actionChangePlayerScore()
     {
         $httpRequest = $this->getHttpRequest();
-        $userId = $this->validate($httpRequest->getPost('token'));
-        $player = $this->database->table('player')->where('userId = ?', $userId);
-        foreach ($player as $player)
-        {
-            $score = $player->score;
-        }	
+        $userId = $this->validate($httpRequest->getPost('token'));	
 		// +1 pricteni bodu za zabrani vlajky
-        $this->database->table('player')->where('userId',$userId)->update(array('score' => $score + 1));
-		
+        $this->database->table('player')->where('userId',$userId)->update(array('score' => new \Nette\Database\SqlLiteral('score + 1')));
 		$player = $this->database->table('player')->where('userId = ?', $userId);
 		$arr = array();
 		foreach ($player as $player) {
@@ -184,8 +178,9 @@ class AndroidPresenter extends BasePresenter
         {
             $ID_fraction = $player->ID_fraction;
 			$ID_player = $player->ID_player;
-        }	
-        $this->database->table('flag')->where('ID_flag',$ID_flag)->update(array('ID_fraction' => $ID_fraction, 'ID_player' => $ID_player, 'flagWhen' => new \DateTime()));
+        }
+		// +1 pricteni k poctu zabrani (pro statisticke ucely)
+        $this->database->table('flag')->where('ID_flag',$ID_flag)->update(array('ID_fraction' => $ID_fraction, 'ID_player' => $ID_player, 'flagWhen' => new \DateTime(), 'taken' => new \Nette\Database\SqlLiteral('taken + 1')));
 		$flag = $this->database->table('flag')->where('ID_flag = ?', $ID_flag);
 		$arr = array();
 		foreach ($flag as $flag) {
