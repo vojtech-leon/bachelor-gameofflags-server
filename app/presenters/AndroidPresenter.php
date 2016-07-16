@@ -29,18 +29,29 @@ class AndroidPresenter extends BasePresenter
 	{
 		$httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
-
-
 		$player = $this->database->table('player')->where('userId = ?', $userId);
-		if(count($player) == 0) {  // pokud zadny neni
-			$this->database->table('player')->insert(array('userId' => $userId));
-			$player = $this->database->table('player')->where('userId = ?', $userId);
-		}
 		$arr = array();
-		foreach ($player as $player)
+		if(count($player) == 0) {  // pokud zadny neni
+			$fr1_scans = $this->database->table('scan')->where('ID_fraction = ?', 1);
+			$fr2_scans = $this->database->table('scan')->where('ID_fraction = ?', 2);
+			if (count($fr2_scans) > count($fr1_scans)) {
+				$player_fraction = 2;
+			} else {
+				$player_fraction = 1;
+			}
+			$this->database->table('player')->insert(array('userId' => $userId, 'ID_fraction' => $player_fraction));
+			$player = $this->database->table('player')->where('userId = ?', $userId);
+			foreach ($player as $player)
+			{
+				$arr[] = array("nickname"=>$player->nickname, "player_fraction"=>$player_fraction);
+			}
+		} else {
+			foreach ($player as $player)
 		{
 			$arr[] = array("nickname"=>$player->nickname);
 		}
+		}
+		
 		$this->payload->player = $arr;
 		$this->sendPayload($arr);
 	}
@@ -70,7 +81,7 @@ class AndroidPresenter extends BasePresenter
 	$arr = array();
 	foreach ($player as $player)
 	{
-			$arr[] = array("score"=>$player->score,"level"=>$player->level);
+			$arr[] = array("score"=>$player->score,"fraction"=>$player->ID_fraction);
 	}
 	$this->payload->player = $arr;
 	$this->sendPayload($arr);
@@ -126,10 +137,11 @@ class AndroidPresenter extends BasePresenter
         foreach ($player as $player)
         {
             $ID_player = $player->ID_player;
+			$ID_fraction = $player->ID_fraction;
         }
         $ID_flag = $flag;
 
-        $this->database->table('scan')->insert(array('ID_player' => $ID_player, 'ID_flag' => $ID_flag,
+        $this->database->table('scan')->insert(array('ID_player' => $ID_player, 'ID_flag' => $ID_flag, 'ID_fraction' => $ID_fraction,
         'fingerprint' => $fingerprint, 'scanWhen' => $scanWhen));
         $scan = $this->database->table('scan')->where('scanWhen = ? AND ID_player = ?', $scanWhen, $ID_player);
 		$arr = array();
