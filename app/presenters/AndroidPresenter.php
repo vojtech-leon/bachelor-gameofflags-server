@@ -216,6 +216,7 @@ class AndroidPresenter extends BasePresenter
         }	
 		$flag = $this->database->table('flag')->where('ID_flag = ?', $ID_flag);
 		$arr = array();
+				
 		foreach ($flag as $flag) {
 			if ($flag->ID_player == $ID_player) {
 				$flagMe = true;
@@ -227,9 +228,23 @@ class AndroidPresenter extends BasePresenter
 			} else {
 				$fractionMe = false;
 			}
-			$arr[] = array('flagWhen' => $flag->flagWhen, 'flagMe' => $flagMe, 'fractionMe' => $fractionMe,
-			'ID_fraction' => $ID_fraction, 'floor' => $flag->floor, 'x' => $flag->x, 'y' => $flag->y);
+			$flagWhen = $flag->flagWhen;
+			$ID_fraction = $flag->ID_fraction;
+			$flagName = $flag->name;
+			$ID_player = $flag->ID_player;
 		}
+		$playerNameDB = $this->database->table('player')->select('nickname')->where('ID_player = ?', $ID_player);
+		foreach ($playerNameDB as $playerNameDB) {
+			$playerName = $playerNameDB->nickname;
+		}
+		$fractionNameDB = $this->database->table('fraction')->select('name')->where('ID_fraction = ?', $ID_fraction);
+		foreach ($fractionNameDB as $fractionNameDB) {
+			$fractionName = $fractionNameDB->name;
+		}
+		
+		$arr[] = array('flagWhen' => $flag->flagWhen, 'flagMe' => $flagMe, 'fractionMe' => $fractionMe,
+			'ID_fraction' => $ID_fraction, 'floor' => $flag->floor, 'x' => $flag->x, 'y' => $flag->y,
+			'flagName' => $flagName, 'playerName' => $playerName, 'fractionName' => $fractionName);
 		$this->payload->flag = $arr;
 		$this->sendPayload($arr);
     }
