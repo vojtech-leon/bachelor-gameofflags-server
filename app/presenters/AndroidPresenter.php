@@ -35,9 +35,9 @@ class AndroidPresenter extends BasePresenter
 			$fr1_scans = $this->database->table('scan')->where('ID_fraction = ?', 1);
 			$fr2_scans = $this->database->table('scan')->where('ID_fraction = ?', 2);
 			if (count($fr2_scans) > count($fr1_scans)) {
-				$player_fraction = 2;
-			} else {
 				$player_fraction = 1;
+			} else {
+				$player_fraction = 2;
 			}
 			$this->database->table('player')->insert(array('userId' => $userId, 'ID_fraction' => $player_fraction));
 			$player = $this->database->table('player')->where('userId = ?', $userId);
@@ -156,21 +156,24 @@ class AndroidPresenter extends BasePresenter
         $httpRequest = $this->getHttpRequest();
         $userId = $this->validate($httpRequest->getPost('token'));
         $nickname = $httpRequest->getPost('nickname');
-        $this->database->table('player')->where('userId',$userId)->update(array('nickname' => $nickname));
-		
-		$player = $this->database->table('player')->where('userId = ?', $userId);
-		$arr = array();
-		foreach ($player as $player) {
-			$arr[] = array('nickname' => $player->nickname);
+		$player = $this->database->table('player')->where('nickname = ?', $nickname);
+		if (count($player) == 0) {
+			$nameAvailability = true;
+			$this->database->table('player')->where('userId',$userId)->update(array('nickname' => $nickname));
+		} else {
+			$nameAvailability = false;
 		}
+		$arr = array();
+		$arr[] = array('nameAvailability' => $nameAvailability);
+		
 		$this->payload->player = $arr;
 		$this->sendPayload($arr);
     }
 	public function actionChangePlayerScore()
     {
         $httpRequest = $this->getHttpRequest();
-        $userId = $this->validate($httpRequest->getPost('token'));	
-		// +1 pricteni bodu za zabrani vlajky
+        $userId = $this->validate($httpRequest->getPost('token'));
+        // +1 pricteni bodu za zabrani vlajky
         $this->database->table('player')->where('userId',$userId)->update(array('score' => new \Nette\Database\SqlLiteral('score + 1')));
 		$player = $this->database->table('player')->where('userId = ?', $userId);
 		$arr = array();
