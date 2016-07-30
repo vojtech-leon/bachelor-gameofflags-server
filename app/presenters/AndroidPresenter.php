@@ -132,7 +132,7 @@ class AndroidPresenter extends BasePresenter
         $userId = $this->validate($httpRequest->getPost('token'));
 		$flag = $httpRequest->getPost('flag');
 		$fingerprint = $httpRequest->getPost('fingerprint');
-		$scanWhen = $httpRequest->getPost('scanWhen');
+		$scanWhen = date('Y-m-d H:i:s',$httpRequest->getPost('scanWhen'));
         $player = $this->database->table('player')->where('userId = ?', $userId);
         foreach ($player as $player)
         {
@@ -146,7 +146,7 @@ class AndroidPresenter extends BasePresenter
         $scan = $this->database->table('scan')->where('scanWhen = ? AND ID_player = ?', $scanWhen, $ID_player);
 		$arr = array();
 		foreach ($scan as $scan) {
-			$arr[] = array('scanWhen' => $scan->scanWhen);
+			$arr[] = array('scanWhen' => strtotime($scan->scanWhen));
 		}
 		$this->payload->scan = $arr;
 		$this->sendPayload($arr);
