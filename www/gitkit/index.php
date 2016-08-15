@@ -4,10 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- 1: Load the Google Identity Toolkit helpers -->
 <?php
-  set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__ .'/vendor/google/apiclient/src');
-  require_once __DIR__ . '/vendor/autoload.php';
+  require_once __DIR__ . '/../../vendor/autoload.php';
 
-  $gitkitClient = Gitkit_Client::createFromFile(dirname(__FILE__) . '/gitkit-server-config.json');
+  $gitkitClient = Gitkit_Client::createFromFile(dirname(__FILE__) . '/../../gitkit/gitkit-server-config.json');
   $gitkitUser = $gitkitClient->getUserInRequest();
 ?>
 <!-- End modification 1 -->

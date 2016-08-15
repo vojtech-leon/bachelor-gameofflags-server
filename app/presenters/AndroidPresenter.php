@@ -4,7 +4,7 @@ namespace App\Presenters;
 
 use Nette;
 use Gitkit_Client;
-class AndroidPresenter extends BasePresenter
+class AndroidPresenter extends Nette\Application\UI\Presenter
 {
 	/** @var Nette\Database\Context */
 	private $database;
@@ -19,7 +19,7 @@ class AndroidPresenter extends BasePresenter
 	 */
     function validate($token)
 	{
-		$gitkitClient = Gitkit_Client::createFromFile(dirname(__FILE__) . './gitkit/gitkit-server-config.json');
+		$gitkitClient = Gitkit_Client::createFromFile(dirname(__FILE__) . '/../../gitkit/gitkit-server-config-nette.json');
 		return $gitkitClient->validateToken($token)->getUserId();
 	}
 

@@ -6,7 +6,7 @@
   <title>Welcome to my project</title>
 <body>
 Hello!
-Todle je index v rootu.
+Tohle je index v rootu.
 
 </body>
 </html>
